@@ -20,7 +20,18 @@ const AnecdoteList = () => {
     const dispatch = useDispatch()
 
     const anecdotes = useSelector(state => state.anecdotes)
-    const anecdotesSorted = anecdotes.slice().sort((a, b) => b.votes - a.votes)
+
+    const filter = useSelector(state => state.filter.filter)
+    const anecdotesFiltered = filter === null
+        ? anecdotes
+        : anecdotes.filter(anecdote => {
+            const contentLower = anecdote.content.toLowerCase()
+            const filterLower = filter.toLowerCase()
+
+            return contentLower.includes(filterLower)
+        })
+
+    const anecdotesSorted = anecdotesFiltered.slice().sort((a, b) => b.votes - a.votes)
 
     return (
         <div>
